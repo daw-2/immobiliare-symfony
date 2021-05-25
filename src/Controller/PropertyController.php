@@ -12,6 +12,8 @@ class PropertyController extends AbstractController
 {
     /**
      * @Route("/nos-annonces", name="property_index")
+     *
+     * Permet de voir les annonces.
      */
     public function index(PropertyRepository $repository): Response
     {
@@ -22,6 +24,25 @@ class PropertyController extends AbstractController
 
         return $this->render('property/index.html.twig', [
             'properties' => $properties,
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}", name="property_show")
+     *
+     * Permet de voir une seul annonce.
+     */
+    // public function show(PropertyRepository $repository, $id)
+    public function show(Property $property)
+    {
+        /* $property = $repository->find($id);
+
+        if (!$property) {
+            throw $this->createNotFoundException();
+        } */
+
+        return $this->render('property/show.html.twig', [
+            'property' => $property,
         ]);
     }
 }
