@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class WelcomeController extends AbstractController
 {
     /**
-     * @Route("/hello", name="hello")
+     * @Route("/demo", name="demo")
      */
-    public function hello(Request $request)
+    public function demo(Request $request)
     {
         $name = 'Matthieu';
         dump($name, [1, 2, 3], $request);
@@ -20,6 +20,17 @@ class WelcomeController extends AbstractController
         // return new Response('<body>Hello '.$name.'</body>');
         return $this->render('welcome/hello.html.twig', [
             'name' => $name,
+        ]);
+    }
+
+    /**
+     * @Route("/hello/{name}", name="hello", requirements={"name"="[a-z]{3,8}"})
+     * @Route("/adresse/{type}", name="hello", requirements={"type"="facturation|livraison"})
+     */
+    public function hello($name = 'matthieu')
+    {
+        return $this->render('welcome/hello.html.twig', [
+            'name' => ucfirst($name),
         ]);
     }
 }
