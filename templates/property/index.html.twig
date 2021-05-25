@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Nos annonces</h1>
+
+    <ul>
+        {% for property in properties %}
+            <li>
+                {{ property.name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
