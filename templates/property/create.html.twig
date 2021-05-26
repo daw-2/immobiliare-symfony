@@ -6,7 +6,9 @@
 
         {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button class="btn btn-primary">Ajouter l'annonce</button>
+            <button formnovalidate class="btn btn-primary">
+                Ajouter l'annonce
+            </button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

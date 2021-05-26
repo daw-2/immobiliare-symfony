@@ -47,6 +47,17 @@ class PropertyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             dump($form->getData());
             dump($property);
+            // On insère l'annonce dans la BDD...
+            // On récupére l'entity manager (em)
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($property);
+            $em->flush();
+
+            // Ajout du message de succès
+            $this->addFlash('success', 'L\'annonce a bien été ajoutée.');
+            // $this->addFlash('danger', 'Test erreur');
+
+            return $this->redirectToRoute('property_index');
         }
 
         return $this->render('property/create.html.twig', [
