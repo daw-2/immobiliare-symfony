@@ -13,6 +13,7 @@ import './styles/app.css';
 import './bootstrap';
 
 var $ = require('jquery');
+require('bootstrap');
 
 console.log('HELLO JS');
 console.log($('body'));
