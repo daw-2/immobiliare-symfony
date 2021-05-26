@@ -1,6 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <a href="{{ path('property_index') }}">Retour aux annonces</a>
-    <h1>{{ property.name }}</h1>
+    <div class="container mt-5 mb-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('property_index') }}">Annonces</a></li>
+                <li class="breadcrumb-item active">{{ property.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-lg-6">
+                IMAGEEEEEEEEEEEEEEEE
+            </div>
+            <div class="col-lg-6">
+                <h1>{{ property.name }}</h1>
+                <p>{{ property.price }}</p>
+            </div>
+        </div>
+
+        <div>
+            {{ property.description }}
+        </div>
+    </div>
 {% endblock %}

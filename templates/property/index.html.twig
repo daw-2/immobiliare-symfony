@@ -1,15 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Nos annonces</h1>
+{# parent() renvoie le contenu du bloc original #}
+{% block title %}Nos annonces - {{ parent() }}{% endblock %}
 
-    <ul>
-        {% for property in properties %}
-            <li>
-                <a href="{{ path('property_show', {id: property.id}) }}">
-                    {{ property.name }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <h1 class="text-center mb-5">Nos annonces</h1>
+
+        <div class="row row-cols-3 g-4">
+            {% for property in properties %}
+                <div class="col">
+                    <div class="card">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ property.name }}</h5>
+                            <p class="card-text">{{ property.description }}</p>
+                            <a href="{{ path('property_show', {id: property.id}) }}" class="btn btn-primary">
+                                Voir l'annonce
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
