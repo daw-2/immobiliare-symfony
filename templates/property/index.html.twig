@@ -6,6 +6,9 @@
 {% block body %}
     <div class="container mt-5 mb-5">
         <h1 class="text-center mb-5">Nos annonces</h1>
+        <a class="btn btn-primary" href="{{ path('property_create') }}">
+            Créer une annonce
+        </a>
 
         <div class="row row-cols-3 g-4">
             {% for property in properties %}

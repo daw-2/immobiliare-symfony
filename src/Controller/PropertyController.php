@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +27,30 @@ class PropertyController extends AbstractController
 
         return $this->render('property/index.html.twig', [
             'properties' => $properties,
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/creer", name="property_create")
+     */
+    public function create(Request $request)
+    {
+        $property = new Property();
+        $form = $this->createFormBuilder($property)
+            ->add('name')
+            ->add('description', TextareaType::class)
+            ->add('price', MoneyType::class, ['divisor' => 100])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getData());
+            dump($property);
+        }
+
+        return $this->render('property/create.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
