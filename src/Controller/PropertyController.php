@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,11 +35,7 @@ class PropertyController extends AbstractController
     public function create(Request $request)
     {
         $property = new Property();
-        $form = $this->createFormBuilder($property)
-            ->add('name')
-            ->add('description', TextareaType::class)
-            ->add('price', MoneyType::class, ['divisor' => 100])
-            ->getForm();
+        $form = $this->createForm(PropertyType::class, $property);
 
         $form->handleRequest($request);
 
