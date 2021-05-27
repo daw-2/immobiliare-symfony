@@ -5,28 +5,44 @@ namespace App\DataFixtures;
 use App\Entity\Property;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $property = new Property();
-        $property->setName('Maison');
-        $property->setDescription('Une super maison');
-        $property->setPrice(50000 * 100);
-        $manager->persist($property);
+        // J'instancie Faker pour générer de fausses données
+        $faker = Factory::create('fr_FR');
 
-        $property = new Property();
-        $property->setName('Appartement');
-        $property->setDescription('Un super appartement');
-        $property->setPrice(30000 * 100);
-        $manager->persist($property);
+        $uploadDirectory = __DIR__.'/../../public/uploads/property';
 
-        $property = new Property();
-        $property->setName('Studio');
-        $property->setDescription('Un super studio');
-        $property->setPrice(20000 * 100);
-        $manager->persist($property);
+        // Si le dossier existe, on le supprime à chaque lancement des fixtures
+        // pour éviter de remplir notre disque dur
+        if (is_dir($uploadDirectory)) {
+            // rmdir($uploadDirectory);
+        }
+
+        // Si le dossier n'existe pas, on le crée pour que faker puisse uploader
+        // ses images. On le fait en recursif car si le dossier uploads n'existe pas,
+        // le dossier property ne peut pas être créé.
+        if (!is_dir($uploadDirectory)) {
+            mkdir($uploadDirectory, 0755, true);
+        }
+
+        for ($i = 0; $i < 100; $i++) {
+            $property = new Property();
+            $property->setName($faker->sentence());
+            $property->setDescription($faker->text(2000));
+            $property->setPrice($faker->numberBetween(34875, 584725) * 100);
+            $property->setSurface($faker->numberBetween(10, 400));
+            $property->setRooms($faker->numberBetween(1, 5));
+            $property->setSold($faker->boolean(25));
+            $property->setSlug($faker->slug());
+            // On passe le fullpath à false pour avoir
+            // toto.jpg au lieu de /Users/matthieu/symfony/public/uploads/toto.jpg
+            $property->setImage($faker->image($uploadDirectory, 640, 480, null, false));
+            $manager->persist($property);
+        }
 
         $manager->flush();
     }

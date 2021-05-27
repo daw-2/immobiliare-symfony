@@ -41,6 +41,31 @@ class Property
      */
     private $price;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $surface;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rooms;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $sold;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +103,66 @@ class Property
     public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getSurface(): ?int
+    {
+        return $this->surface;
+    }
+
+    public function setSurface(int $surface): self
+    {
+        $this->surface = $surface;
+
+        return $this;
+    }
+
+    public function getRooms(): ?int
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(int $rooms): self
+    {
+        $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    public function getSold(): ?bool
+    {
+        return $this->sold;
+    }
+
+    public function setSold(bool $sold): self
+    {
+        $this->sold = $sold;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
