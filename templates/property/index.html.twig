@@ -25,9 +25,16 @@
                             </p>
                             <p class="card-text">{{ property.description|u.truncate(50, '...', false) }}</p>
                             <p class="h2">{{ (property.price/100)|number_format(2, ',', ' ') }}€</p>
-                            <a href="{{ path('property_show', {slug: property.slug}) }}" class="btn btn-primary">
+                            <a href="{{ path('property_show', {slug: property.slug, id: property.id}) }}" class="btn btn-primary">
                                 Voir l'annonce
                             </a>
+                            <a href="{{ path('property_edit', {id: property.id}) }}" class="btn btn-info">
+                                Modifier
+                            </a>
+                            <form class="d-inline" action="{{ path('property_delete', {id: property.id}) }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-property') }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
                         </div>
                     </div>
                 </div>

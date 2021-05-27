@@ -27,7 +27,7 @@ class PropertyType extends AbstractType
                 'attr' => [
                     'min' => 10,
                     'max' => 400,
-                    'value' => 10,
+                    // 'value' => 10,
                     'class' => 'w-100',
                 ],
             ])
@@ -46,7 +46,9 @@ class PropertyType extends AbstractType
             ->add('sold', CheckboxType::class, [
                 'label' => 'Vendu ?',
             ])
-            ->add('image', FileType::class)
+            ->add('image', FileType::class, [
+                'mapped' => false,
+            ])
         ;
     }
 

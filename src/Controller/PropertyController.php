@@ -66,7 +66,7 @@ class PropertyController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{slug}", name="property_show")
+     * @Route("/annonce/{slug}_{id}", name="property_show")
      *
      * Permet de voir une seul annonce.
      */
@@ -82,5 +82,52 @@ class PropertyController extends AbstractController
         return $this->render('property/show.html.twig', [
             'property' => $property,
         ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}/editer", name="property_edit")
+     */
+    public function edit(Request $request, SluggerInterface $slugger, Property $property)
+    {
+        $form = $this->createForm(PropertyType::class, $property);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $property->setSlug(
+                $slugger->slug($property->getName())->lower()
+            );
+
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'L\'annonce a bien été modifiée.');
+
+            return $this->redirectToRoute('property_index');
+        }
+
+        return $this->render('property/edit.html.twig', [
+            'property' => $property,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}/supprimer", name="property_delete")
+     */
+    public function delete(Request $request, Property $property)
+    {
+        $token = $request->get('token');
+
+        if (!$this->isCsrfTokenValid('delete-property', $token)) {
+            $this->addFlash('danger', 'FAILLE CSRF');
+            return $this->redirectToRoute('property_index');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($property);
+        $em->flush();
+
+        $this->addFlash('danger', 'L\'annonce a été supprimée.');
+
+        return $this->redirectToRoute('property_index');
     }
 }
