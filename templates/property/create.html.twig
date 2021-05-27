@@ -5,7 +5,34 @@
         <h1 class="text-center mb-5">Créer une annonce</h1>
 
         {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.name, { label: 'Nom' }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(form.description, 'Contenu') }}
+                    {{ form_widget(form.description) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.price, { label: 'Prix' }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.surface) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.rooms) }}
+                </div>
+                <div class="col-md-6">
+                    <div class="pt-4">{{ form_row(form.sold) }}</div>
+                </div>
+            </div>
+
             {{ form_widget(form) }}
+
             <button formnovalidate class="btn btn-primary">
                 Ajouter l'annonce
             </button>

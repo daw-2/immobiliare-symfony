@@ -15,5 +15,13 @@ import './bootstrap';
 var $ = require('jquery');
 require('bootstrap');
 
-console.log('HELLO JS');
-console.log($('body'));
+/**
+ * Evénement sur le range
+ */
+$('#property_surface').after('<div id="result">'+$('#property_surface').val()+' m²</div>');
+
+$('#property_surface').on('input', function () {
+    console.log( $(this).val() );
+    $('#result').remove(); // Supprime la div pour éviter les doublons
+    $(this).after('<div id="result">'+$(this).val()+' m²</div>');
+});

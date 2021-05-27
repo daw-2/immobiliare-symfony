@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PropertyController extends AbstractController
 {
@@ -32,7 +33,7 @@ class PropertyController extends AbstractController
     /**
      * @Route("/annonce/creer", name="property_create")
      */
-    public function create(Request $request)
+    public function create(Request $request, SluggerInterface $slugger)
     {
         $property = new Property();
         $form = $this->createForm(PropertyType::class, $property);
@@ -42,6 +43,10 @@ class PropertyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             dump($form->getData());
             dump($property);
+            // L'annonce trop cool => L-annonce-trop-cool => l-annonce-trop-cool
+            $property->setSlug(
+                $slugger->slug($property->getName())->lower()
+            );
             // On insère l'annonce dans la BDD...
             // On récupére l'entity manager (em)
             $em = $this->getDoctrine()->getManager();
