@@ -10,15 +10,22 @@
             Créer une annonce
         </a>
 
-        <div class="row row-cols-3 g-4">
+        <div class="row row-cols-md-3 row-cols-2 g-4">
             {% for property in properties %}
                 <div class="col">
                     <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
+                        {% if property.sold %}
+                        <img src="{{ asset('img/sold.png') }}" alt="Sold" width="80" class="position-absolute">
+                        {% endif %}
+                        <img src="{{ asset('uploads/property/' ~ property.image) }}" class="card-img-top" alt="{{ property.name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ property.name }}</h5>
-                            <p class="card-text">{{ property.description }}</p>
-                            <a href="{{ path('property_show', {id: property.id}) }}" class="btn btn-primary">
+                            <p class="card-text">
+                                {{ property.surface }}m² - {{ property.rooms }} pièces
+                            </p>
+                            <p class="card-text">{{ property.description|u.truncate(50, '...', false) }}</p>
+                            <p class="h2">{{ (property.price/100)|number_format(2, ',', ' ') }}€</p>
+                            <a href="{{ path('property_show', {slug: property.slug}) }}" class="btn btn-primary">
                                 Voir l'annonce
                             </a>
                         </div>

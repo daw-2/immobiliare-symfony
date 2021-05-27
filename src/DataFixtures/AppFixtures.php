@@ -6,6 +6,7 @@ use App\Entity\Property;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Filesystem\Filesystem;
 
 class AppFixtures extends Fixture
 {
@@ -19,7 +20,7 @@ class AppFixtures extends Fixture
         // Si le dossier existe, on le supprime à chaque lancement des fixtures
         // pour éviter de remplir notre disque dur
         if (is_dir($uploadDirectory)) {
-            // rmdir($uploadDirectory);
+            (new Filesystem())->remove($uploadDirectory);
         }
 
         // Si le dossier n'existe pas, on le crée pour que faker puisse uploader

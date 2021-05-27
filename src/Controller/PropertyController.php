@@ -61,7 +61,7 @@ class PropertyController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{id}", name="property_show")
+     * @Route("/annonce/{slug}", name="property_show")
      *
      * Permet de voir une seul annonce.
      */
