@@ -46,6 +46,11 @@ class PropertyType extends AbstractType
             ->add('sold', CheckboxType::class, [
                 'label' => 'Vendu ?',
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie du bien',
+                'choice_label' => 'name', // On affiche la propriété name de la classe Category
+                'expanded' => true, // Radio
+            ])
             ->add('image', FileType::class, [
                 'mapped' => false,
             ])

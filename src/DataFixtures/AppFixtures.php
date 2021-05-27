@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Entity\Property;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -30,6 +31,14 @@ class AppFixtures extends Fixture
             mkdir($uploadDirectory, 0755, true);
         }
 
+        $categories = ['Maison', 'Appartement', 'Villa', 'Garage', 'Studio'];
+        foreach ($categories as $key => $name) {
+            $category = new Category();
+            $category->setName($name);
+            $manager->persist($category);
+            $this->addReference('category-'.$key, $category);
+        }
+
         for ($i = 0; $i < 100; $i++) {
             $property = new Property();
             $property->setName($faker->sentence());
@@ -42,6 +51,7 @@ class AppFixtures extends Fixture
             // On passe le fullpath à false pour avoir
             // toto.jpg au lieu de /Users/matthieu/symfony/public/uploads/toto.jpg
             $property->setImage($faker->image($uploadDirectory, 640, 480, null, false));
+            $property->setCategory($this->getReference('category-'.rand(0, 4)));
             $manager->persist($property);
         }
 
