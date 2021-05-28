@@ -23,6 +23,11 @@
 					<a class="nav-link {{ route == 'contact' ? 'active' }}" href="{{ path('contact') }}">Contact</a>
 				</li>
 			</ul>
+
+			<form action="{{ path('property_index') }}" method="get">
+				<input type="text" name="search" class="form-control d-inline w-auto" placeholder="Rechercher un bien...">
+				<button class="btn btn-outline-primary">Recherche</button>
+			</form>
 		</div>
 	</div>
 </nav>

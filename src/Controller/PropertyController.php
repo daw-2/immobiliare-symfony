@@ -27,6 +27,11 @@ class PropertyController extends AbstractController
         );
         dump($properties);
 
+        // Si on fait une recherche...
+        if ($request->get('search')) {
+            $properties = $repository->search($request->get('search'));
+        }
+
         // Pour récupérer les annonces
         // $properties = $repository->findAll();
         // dump($properties);
