@@ -4,13 +4,22 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Property;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
         // J'instancie Faker pour générer de fausses données
@@ -29,6 +38,25 @@ class AppFixtures extends Fixture
         // le dossier property ne peut pas être créé.
         if (!is_dir($uploadDirectory)) {
             mkdir($uploadDirectory, 0755, true);
+        }
+
+        $user = new User();
+        $user->setEmail('matthieu@boxydev.com');
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword(
+            $this->encoder->encodePassword($user, 'password')
+        );
+        $this->addReference('user-0', $user);
+        $manager->persist($user);
+
+        for ($i = 1; $i < 10; $i++) {
+            $user = new User();
+            $user->setEmail($faker->email());
+            $user->setPassword(
+                $this->encoder->encodePassword($user, 'password')
+            );
+            $this->addReference('user-'.$i, $user);
+            $manager->persist($user);
         }
 
         $categories = ['Maison', 'Appartement', 'Villa', 'Garage', 'Studio'];
@@ -52,6 +80,7 @@ class AppFixtures extends Fixture
             // toto.jpg au lieu de /Users/matthieu/symfony/public/uploads/toto.jpg
             $property->setImage($faker->image($uploadDirectory, 640, 480, null, false));
             $property->setCategory($this->getReference('category-'.rand(0, 4)));
+            $property->setOwner($this->getReference('user-'.rand(0, 9)));
             $manager->persist($property);
         }
 

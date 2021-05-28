@@ -12,7 +12,7 @@
         {% set route = app.request.get('_route') %}
 
 		<div class="collapse navbar-collapse" id="menu">
-			<ul class="navbar-nav mr-auto">
+			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
 					<a class="nav-link {{ route == 'home' ? 'active' }}" href="{{ path('home') }}">Accueil</a>
 				</li>
@@ -28,6 +28,19 @@
 				<input type="text" name="search" class="form-control d-inline w-auto" placeholder="Rechercher un bien...">
 				<button class="btn btn-outline-primary">Recherche</button>
 			</form>
+
+			<ul class="navbar-nav ms-auto">
+				{% if app.user %}
+				<li class="nav-item">
+					<span>{{ app.user.email }} </span>
+					<a class="nav-link d-inline" href="{{ path('app_logout') }}">Déconnexion</a>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link {{ route == 'app_login' ? 'active' }}" href="{{ path('app_login') }}">Connexion</a>
+				</li>
+				{% endif %}
+			</ul>
 		</div>
 	</div>
 </nav>

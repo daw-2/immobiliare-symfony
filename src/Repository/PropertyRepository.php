@@ -35,7 +35,8 @@ class PropertyRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('c')
-            ->innerJoin('p.category', 'c');
+            ->innerJoin('p.category', 'c')
+            ->orderBy('p.id', 'DESC');
 
         if ($surface) {
             $qb->andWhere('p.surface > :surface')->setParameter('surface', $surface);

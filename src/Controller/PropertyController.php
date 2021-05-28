@@ -47,7 +47,11 @@ class PropertyController extends AbstractController
      */
     public function create(Request $request, SluggerInterface $slugger)
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $property = new Property();
+        // On va lier l'annonce à l'utilisateur connecté
+        $property->setOwner($this->getUser());
         $form = $this->createForm(PropertyType::class, $property);
 
         $form->handleRequest($request);
