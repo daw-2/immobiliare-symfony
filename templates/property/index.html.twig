@@ -39,7 +39,7 @@
                                 {% endif %}
                                 <img src="{{ asset('uploads/property/' ~ property.image) }}" class="card-img-top" alt="{{ property.name }}">
                                 <div class="card-body">
-                                    <p class="card-text">{{ property.category.name }}</p>
+                                    <p class="card-text">{{ property.category.name }} - {{ property.owner.email }}</p>
                                     <h5 class="card-title">{{ property.name }}</h5>
                                     <p class="card-text">
                                         {{ property.surface }}m² - {{ property.rooms }} pièces
@@ -49,6 +49,7 @@
                                     <a href="{{ path('property_show', {slug: property.slug, id: property.id}) }}" class="btn btn-primary">
                                         Voir l'annonce
                                     </a>
+                                    {% if property.owner == app.user %}
                                     <a href="{{ path('property_edit', {id: property.id}) }}" class="btn btn-info">
                                         Modifier
                                     </a>
@@ -56,6 +57,7 @@
                                         <input type="hidden" name="token" value="{{ csrf_token('delete-property') }}">
                                         <button class="btn btn-danger">Supprimer</button>
                                     </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

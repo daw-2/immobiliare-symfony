@@ -105,6 +105,11 @@ class PropertyController extends AbstractController
      */
     public function edit(Request $request, SluggerInterface $slugger, Property $property)
     {
+        // Seul le propriétaire de l'annonce peut modifier l'annonce
+        if ($property->getOwner() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 
@@ -131,6 +136,10 @@ class PropertyController extends AbstractController
      */
     public function delete(Request $request, Property $property)
     {
+        if ($property->getOwner() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $token = $request->get('token');
 
         if (!$this->isCsrfTokenValid('delete-property', $token)) {
