@@ -10,36 +10,62 @@
             Créer une annonce
         </a>
 
-        <div class="row row-cols-md-3 row-cols-2 g-4">
-            {% for property in properties %}
-                <div class="col">
-                    <div class="card">
-                        {% if property.sold %}
-                        <img src="{{ asset('img/sold.png') }}" alt="Sold" width="80" class="position-absolute">
-                        {% endif %}
-                        <img src="{{ asset('uploads/property/' ~ property.image) }}" class="card-img-top" alt="{{ property.name }}">
-                        <div class="card-body">
-                            <p class="card-text">{{ property.category.name }}</p>
-                            <h5 class="card-title">{{ property.name }}</h5>
-                            <p class="card-text">
-                                {{ property.surface }}m² - {{ property.rooms }} pièces
-                            </p>
-                            <p class="card-text">{{ property.description|u.truncate(50, '...', false) }}</p>
-                            <p class="h2">{{ (property.price/100)|number_format(2, ',', ' ') }}€</p>
-                            <a href="{{ path('property_show', {slug: property.slug, id: property.id}) }}" class="btn btn-primary">
-                                Voir l'annonce
-                            </a>
-                            <a href="{{ path('property_edit', {id: property.id}) }}" class="btn btn-info">
-                                Modifier
-                            </a>
-                            <form class="d-inline" action="{{ path('property_delete', {id: property.id}) }}">
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-property') }}">
-                                <button class="btn btn-danger">Supprimer</button>
-                            </form>
+        <div class="row">
+            <div class="col-md-3">
+                <form action="" method="get">
+                    <input type="number" class="form-control mb-3" name="surface" placeholder="Surface minimum" value="{{ app.request.get('surface') }}">
+                    <input type="number" class="form-control mb-3" name="budget" placeholder="Budget maximum" value="{{ app.request.get('budget') }}">
+                    <select class="form-select mb-3" name="category">
+                        {% for category in categories %}
+                            <option
+                                value="{{ category.id }}"
+                                {{ app.request.get('category') == category.id ? 'selected' }}
+                            >
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button class="btn btn-primary d-block w-100">Filtrer</button>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <div class="row row-cols-md-3 row-cols-2 g-4">
+                    {% for property in properties %}
+                        <div class="col">
+                            <div class="card">
+                                {% if property.sold %}
+                                <img src="{{ asset('img/sold.png') }}" alt="Sold" width="80" class="position-absolute">
+                                {% endif %}
+                                <img src="{{ asset('uploads/property/' ~ property.image) }}" class="card-img-top" alt="{{ property.name }}">
+                                <div class="card-body">
+                                    <p class="card-text">{{ property.category.name }}</p>
+                                    <h5 class="card-title">{{ property.name }}</h5>
+                                    <p class="card-text">
+                                        {{ property.surface }}m² - {{ property.rooms }} pièces
+                                    </p>
+                                    <p class="card-text">{{ property.description|u.truncate(50, '...', false) }}</p>
+                                    <p class="h2">{{ (property.price/100)|number_format(2, ',', ' ') }}€</p>
+                                    <a href="{{ path('property_show', {slug: property.slug, id: property.id}) }}" class="btn btn-primary">
+                                        Voir l'annonce
+                                    </a>
+                                    <a href="{{ path('property_edit', {id: property.id}) }}" class="btn btn-info">
+                                        Modifier
+                                    </a>
+                                    <form class="d-inline" action="{{ path('property_delete', {id: property.id}) }}">
+                                        <input type="hidden" name="token" value="{{ csrf_token('delete-property') }}">
+                                        <button class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="text-center h4 w-100">
+                            Il n'y a pas d'annonces.
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

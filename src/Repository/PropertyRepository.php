@@ -31,6 +31,27 @@ class PropertyRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAllWithFilters($surface, $budget, $category)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('c')
+            ->innerJoin('p.category', 'c');
+
+        if ($surface) {
+            $qb->andWhere('p.surface > :surface')->setParameter('surface', $surface);
+        }
+
+        if ($budget) {
+            $qb->andWhere('p.price < :budget')->setParameter('budget', $budget * 100);
+        }
+
+        if ($category) {
+            $qb->andWhere('p.category = :category')->setParameter('category', $category);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Property[] Returns an array of Property objects
     //  */

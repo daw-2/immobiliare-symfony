@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
@@ -18,15 +19,21 @@ class PropertyController extends AbstractController
      *
      * Permet de voir les annonces.
      */
-    public function index(PropertyRepository $repository): Response
+    public function index(Request $request, PropertyRepository $repository): Response
     {
-        // Pour récupérer les annonces, 2 solutions
-        // $properties = $this->getDoctrine()->getRepository(Property::class)->findAll();
-        $properties = $repository->findAll();
+        // dump($request->get('surface'));
+        $properties = $repository->findAllWithFilters(
+            $request->get('surface'), $request->get('budget'), $request->get('category')
+        );
         dump($properties);
+
+        // Pour récupérer les annonces
+        // $properties = $repository->findAll();
+        // dump($properties);
 
         return $this->render('property/index.html.twig', [
             'properties' => $properties,
+            'categories' => $this->getDoctrine()->getRepository(Category::class)->findAll(),
         ]);
     }
 
