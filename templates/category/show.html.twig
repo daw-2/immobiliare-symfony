@@ -3,22 +3,11 @@
 {% block title %}Category{% endblock %}
 
 {% block body %}
-    <h1>Category</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ category.name }}</td>
-            </tr>
-        </tbody>
-    </table>
-
     <div class="container mt-5 mb-5">
+        <a class="btn btn-info" href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
+        {{ include('category/_delete_form.html.twig') }}
+        <h1 class="text-center mb-5">{{ category.name }}</h1>
+
         <div class="row row-cols-md-3 row-cols-2 g-4">
             {% for property in category.properties %}
                 <div class="col">
@@ -51,10 +40,4 @@
             {% endfor %}
         </div>
     </div>
-
-    <a href="{{ path('category_index') }}">back to list</a>
-
-    <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
-
-    {{ include('category/_delete_form.html.twig') }}
 {% endblock %}

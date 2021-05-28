@@ -19,6 +19,18 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
+    public function findAllGreaterThanPrice($price)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('c')
+            ->innerJoin('p.category', 'c')
+            ->where('p.price > :price')
+            ->setParameter('price', $price * 100)
+            ->orderBy('p.price', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Property[] Returns an array of Property objects
     //  */
