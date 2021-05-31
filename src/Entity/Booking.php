@@ -140,15 +140,7 @@ class Booking
     public function isValid()
     {
         // Récupèrer les jours où la propriété n'est pas disponible.
-        $reservedDays = []; // [2, 3, 4, 5, 6]
-
-        // On parcours chaque réservation de l'annonce
-        // pour avoir les jours bloqués
-        foreach ($this->property->getBookings() as $booking) {
-            $reservedDays = array_merge(
-                $reservedDays, $booking->getDays()
-            );
-        }
+        $reservedDays = $this->property->getReservedDays();
 
         // Récupèrer les jours de la réservation actuelle
         $days = $this->getDays(); // [28, 29, 30]

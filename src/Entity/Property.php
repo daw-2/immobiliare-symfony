@@ -255,4 +255,24 @@ class Property
         
         return ceil($propertyPrice / 10 / 12 / 30);
     }
+
+    /**
+     * Permet de récupèrer la liste des dates réservées sur
+     * cette annonce.
+     */
+    public function getReservedDays()
+    {
+        // Récupèrer les jours où la propriété n'est pas disponible.
+        $reservedDays = []; // [2, 3, 4, 5, 6]
+
+        // On parcours chaque réservation de l'annonce
+        // pour avoir les jours bloqués
+        foreach ($this->getBookings() as $booking) {
+            $reservedDays = array_merge(
+                $reservedDays, $booking->getDays()
+            );
+        }
+
+        return $reservedDays;
+    }
 }

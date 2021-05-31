@@ -35,6 +35,11 @@
 
                     <button class="btn btn-primary">Réserver</button>
                 {{ form_end(form) }}
+
+                <div>
+                    Total: <span id="total">0</span> € <br />
+                    <span id="days">0</span> nuits à {{ property.dayPrice }} € euros la nuit.
+                </div>
             </div>
         </div>
 
@@ -48,6 +53,12 @@
     {{ parent() }}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+    <style>
+        .disabled {
+            text-decoration: line-through;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -63,9 +74,19 @@
                 format: 'yyyy-mm-dd',
                 startDate: new Date(),
                 datesDisabled: [
-                    '2021-06-05',
-                    '2021-06-06',
+                    {% for day in property.reservedDays %}
+                        '{{ day.format('Y-m-d') }}',
+                    {% endfor %}
                 ]
+            });
+
+            // Calcul pour le prix de la réservation
+            $('.input-daterange').on('changeDate', function (event) {
+                // Compter le nombre de jours réservées
+                var days = $('.range-start').length + $('.range').length + $('.range-end:not(.range-start)').length;
+                var price = days * {{ property.dayPrice }};
+                $('#days').text(days);
+                $('#total').text(price);
             });
         }
     </script>
