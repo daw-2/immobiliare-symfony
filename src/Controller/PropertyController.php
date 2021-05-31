@@ -102,7 +102,29 @@ class PropertyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($booking);
+            $this->denyAccessUnlessGranted('ROLE_USER');
+
+            // Calcul du prix de la réservation... 10% du prix d'achat / 12 / 20
+            // Dans Booking, on va créer une méthode getDays()
+            // et dans Property, getDayPrice()
+            $booking->setProperty($property);
+            $booking->setPrice(
+                $property->getDayPrice() * count($booking->getDays())
+            );
+            $booking->setUser($this->getUser());
+
+            // Vérification si la réservation est possible
+            // par rapport aux réservations existantes...
+            
+
+            $this->addFlash(
+                'success',
+                "Votre réservation du {$booking->getStartDate()->format('d/m/Y')} au {$booking->getEndDate()->format('d/m/Y')} de {$booking->getPrice()} euros est bien prise en compte."
+            );
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($booking);
+            $em->flush();
         }
 
         return $this->render('property/show.html.twig', [

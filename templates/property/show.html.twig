@@ -60,7 +60,8 @@
         window.onload = function () { // On attends que le DOM soit chargé
             $('.input-daterange').datepicker({
                 language: 'fr',
-                format: 'yyyy-mm-dd 00:00:00',
+                format: 'yyyy-mm-dd',
+                startDate: new Date(),
             });
         }
     </script>

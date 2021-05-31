@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookingRepository::class)
@@ -19,11 +20,13 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("today")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual(propertyPath="startDate")
      */
     private $endDate;
 
@@ -107,5 +110,27 @@ class Booking
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * Renvoie les jours réservés sous forme de tableau
+     */
+    public function getDays()
+    {
+        $startDate = $this->startDate;
+        $endDate = $this->endDate;
+
+        $period = new \DatePeriod(
+            $startDate,
+            new \DateInterval('P1D'),
+            $endDate
+        );
+
+        $days = [];
+        foreach ($period as $day) {
+            $days[] = $day->format('d');
+        }
+
+        return $days;
     }
 }

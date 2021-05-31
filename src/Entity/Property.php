@@ -244,4 +244,15 @@ class Property
 
         return $this;
     }
+
+    /**
+     * Renvoie le prix à la journée de la réservation
+     * 10% du prix d'achat / 12 / 20
+     */
+    public function getDayPrice()
+    {
+        $propertyPrice = $this->price / 100;
+        
+        return ceil($propertyPrice / 10 / 12 / 30);
+    }
 }
