@@ -247,7 +247,7 @@ class Property
 
     /**
      * Renvoie le prix à la journée de la réservation
-     * 10% du prix d'achat / 12 / 20
+     * 10% du prix d'achat / 12 / 30
      */
     public function getDayPrice()
     {
