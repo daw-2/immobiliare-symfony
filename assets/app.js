@@ -13,6 +13,8 @@ import './styles/app.css';
 import './bootstrap';
 
 var $ = require('jquery');
+// Pour pouvoir utiliser jQuery en dehors de Webpack
+global.$ = global.jQuery = $;
 require('bootstrap');
 
 /**

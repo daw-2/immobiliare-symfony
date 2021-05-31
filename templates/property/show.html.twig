@@ -22,6 +22,19 @@
                     {{ property.surface }}m² - {{ property.rooms }} pièces
                 </p>
                 <p class="h2">{{ (property.price/100)|number_format(2, ',', ' ') }}€</p>
+
+                {{ form_start(form) }}
+                    <div class="input-daterange row">
+                        <div class="col-lg-6">
+                            {{ form_row(form.startDate) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.endDate) }}
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary">Réserver</button>
+                {{ form_end(form) }}
             </div>
         </div>
 
@@ -29,4 +42,26 @@
             {{ property.description }}
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js" defer></script>
+
+    <script defer>
+        window.onload = function () { // On attends que le DOM soit chargé
+            $('.input-daterange').datepicker({
+                language: 'fr',
+                format: 'yyyy-mm-dd 00:00:00',
+            });
+        }
+    </script>
 {% endblock %}

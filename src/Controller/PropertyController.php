@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Category;
 use App\Entity\Property;
+use App\Form\BookingType;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,10 +86,10 @@ class PropertyController extends AbstractController
     /**
      * @Route("/annonce/{slug}_{id}", name="property_show")
      *
-     * Permet de voir une seul annonce.
+     * Permet de voir une seule annonce.
      */
     // public function show(PropertyRepository $repository, $id)
-    public function show(Property $property)
+    public function show(Request $request, Property $property)
     {
         /* $property = $repository->find($id);
 
@@ -95,8 +97,17 @@ class PropertyController extends AbstractController
             throw $this->createNotFoundException();
         } */
 
+        $booking = new Booking();
+        $form = $this->createForm(BookingType::class, $booking);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($booking);
+        }
+
         return $this->render('property/show.html.twig', [
             'property' => $property,
+            'form' => $form->createView(),
         ]);
     }
 
