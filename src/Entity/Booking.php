@@ -128,9 +128,39 @@ class Booking
 
         $days = [];
         foreach ($period as $day) {
-            $days[] = $day->format('d');
+            $days[] = $day;
         }
 
         return $days;
+    }
+
+    /**
+     * Permet de valider les dates de réservations.
+     */
+    public function isValid()
+    {
+        // Récupèrer les jours où la propriété n'est pas disponible.
+        $reservedDays = []; // [2, 3, 4, 5, 6]
+
+        // On parcours chaque réservation de l'annonce
+        // pour avoir les jours bloqués
+        foreach ($this->property->getBookings() as $booking) {
+            $reservedDays = array_merge(
+                $reservedDays, $booking->getDays()
+            );
+        }
+
+        // Récupèrer les jours de la réservation actuelle
+        $days = $this->getDays(); // [28, 29, 30]
+
+        // Si l'un des jours de la réservation actuelle
+        // est dans les jours réservés, on retourne false
+        foreach ($days as $day) {
+            if (in_array($day, $reservedDays)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -115,16 +115,19 @@ class PropertyController extends AbstractController
 
             // Vérification si la réservation est possible
             // par rapport aux réservations existantes...
-            
+            if ($booking->isValid()) {
+                $this->addFlash(
+                    'success',
+                    "Votre réservation du {$booking->getStartDate()->format('d/m/Y')} au {$booking->getEndDate()->format('d/m/Y')} de {$booking->getPrice()} euros est bien prise en compte."
+                );
 
-            $this->addFlash(
-                'success',
-                "Votre réservation du {$booking->getStartDate()->format('d/m/Y')} au {$booking->getEndDate()->format('d/m/Y')} de {$booking->getPrice()} euros est bien prise en compte."
-            );
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($booking);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($booking);
+                $em->flush();
+            } else {
+                // Erreur sur les dates...
+                $this->addFlash('danger', 'Les dates ne sont pas disponibles.');
+            }
         }
 
         return $this->render('property/show.html.twig', [
